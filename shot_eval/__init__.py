@@ -2,7 +2,12 @@ import re
 import numpy as np
 import glob
 import os
-from moviepy.editor import VideoFileClip
+
+assert 'SHOT_DETECTION_DATASET' in os.environ, "Please download the ShotDetection Code & dataset from " \
+                                    "http://imagelab.ing.unimore.it/imagelab/researchActivity.asp?idActivity=19 " \
+                                    "and set SHOT_DETECTION_DATASET to its location "
+
+DATASET_DIR = os.environ['SHOT_DETECTION_DATASET']
 
 def eval(detection_fn):
     """Evaluates a detection function.
@@ -17,7 +22,7 @@ def eval(detection_fn):
     f1_score : float
         the mean F1 score over the dataset
     """
-    videos=sorted(glob.glob('/home/gyglim/scratch_gygli/CODE/ShotDetector/video_rai/*.mp4'))
+    videos=sorted(glob.glob('%s/video_rai/*.mp4' % DATASET_DIR))
     f1=[]
     for v in videos:
         videoid = os.path.splitext(os.path.split(v)[1])[0].split('_')[0]
@@ -54,7 +59,7 @@ def get_f1(detected_shots,video_id='25010'):
     median_frame_err
 
     """
-    gt_shots = np.loadtxt('/home/gyglim/scratch_gygli/CODE/ShotDetector/video_rai/%s_gt.txt' % video_id).astype('int')
+    gt_shots = np.loadtxt('%s/video_rai/%s_gt.txt' % (DATASET_DIR,video_id)).astype('int')
     detected_shots=detected_shots.astype('int')
     gt_idx=0
     det_idx=0
