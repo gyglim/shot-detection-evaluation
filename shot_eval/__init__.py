@@ -105,8 +105,8 @@ def get_f1(detected_shots,video_id='25010', gt_shots=None, return_incorrect_shot
             tp+=1
             gt_idx+=1
             det_idx+=1
-    p = tp / max(1e-8,float(tp+fp))
-    r = tp / max(1e-8,float(tp+fn))
+    p = max(1e-8,tp) / max(1e-8,float(tp+fp))
+    r = max(1e-8,tp) / max(1e-8,float(tp+fn))
     f1 = 2.0*r*p/max(1e-8,float(r+p))
 
     assert tp+fn==len(gt_trans)
