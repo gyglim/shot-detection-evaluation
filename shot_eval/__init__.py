@@ -105,9 +105,9 @@ def get_f1(detected_shots,video_id='25010', gt_shots=None, return_incorrect_shot
             tp+=1
             gt_idx+=1
             det_idx+=1
-    p = tp / float(tp+fp)
-    r = tp / float(tp+fn)
-    f1 = 2.0*r*p/float(r+p)
+    p = tp / max(1e-8,float(tp+fp))
+    r = tp / max(1e-8,float(tp+fn))
+    f1 = 2.0*r*p/max(1e-8,float(r+p))
 
     assert tp+fn==len(gt_trans)
     assert tp+fp==len(detected_trans)
@@ -140,5 +140,3 @@ def visualize_errors(detected_shots, video_id='25010'):
 
             if count==20:
                 break
-
-
