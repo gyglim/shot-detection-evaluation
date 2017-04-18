@@ -42,6 +42,8 @@ def eval(detection_fn, all=True):
     f1=np.array(f1)
     print('Average frame error: %.2f' % np.mean(f1[:,1]))
     print('Median frame error: %.2f' % np.mean(f1[:,2]))
+    print('Average precision: %.2f' % np.mean(f1[:, 3]))
+    print('Average recall: %.2f' % np.mean(f1[:, 4]))
     print('Average F1: %.2f' % np.mean(f1[:, 0]))
 
     return np.mean(f1[:, 0])
@@ -119,7 +121,7 @@ def get_f1(detected_shots,video_id='25010', gt_shots=None, return_incorrect_shot
     if return_incorrect_shots:
         return false_positives, false_negatives
     else:
-        return f1, mean_frame_err, median_frame_err
+        return f1, mean_frame_err, median_frame_err, p, r
 
 
 def visualize_errors(detected_shots, video_id='25010'):
@@ -130,13 +132,13 @@ def visualize_errors(detected_shots, video_id='25010'):
 
     for name,errors in zip(('FN','FP'),(false_negatives, false_positives)):
         for count, trans in enumerate(errors):
-            plt.figure(figsize=(25,50))
+            plt.figure(figsize=(25,80))
             trans[0]=np.floor(trans[0])
             trans[-1] = np.ceil(trans[-1])
             for idx,frame_idx in enumerate(np.arange(trans[0],trans[1]+1)):
                 plt.subplot(1,trans[1]-trans[0]+1,idx+1)
                 plt.imshow(v.get_frame(frame_idx/v.fps))
-                plt.title('%s: frame %.1f' % (name, frame_idx))
+                plt.title('%s; %.1f' % (name, frame_idx))
 
             if count==20:
                 break
