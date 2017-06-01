@@ -4,7 +4,10 @@ import glob
 import os
 
 from moviepy.editor import VideoFileClip
-import matplotlib.pyplot as plt
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    pass
 
 assert 'SHOT_DETECTION_DATASET' in os.environ, "Please download the ShotDetection Code & dataset from " \
                                     "http://imagelab.ing.unimore.it/files/ShotDetector.zip" \
@@ -139,6 +142,3 @@ def visualize_errors(detected_shots, video_id='25010'):
                 plt.subplot(1,trans[1]-trans[0]+1,idx+1)
                 plt.imshow(v.get_frame(frame_idx/v.fps))
                 plt.title('%s; %.1f' % (name, frame_idx))
-
-            if count==20:
-                break
